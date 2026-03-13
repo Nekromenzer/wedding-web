@@ -33,7 +33,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import draculeMusic from "@/assets/dracule-music.mp3";
+import draculeMusic from "@/assets/audio/dracule-music.mp3";
 
 const eventDetails = {
   groom: "Maneesha",
@@ -289,7 +289,7 @@ const SectionHeading = ({ eyebrow, title, text }) => (
     <p className="mb-3 text-xs uppercase tracking-[0.45em] text-red-300/80">{eyebrow}</p>
     <h2
       className="text-3xl font-semibold tracking-[0.08em] text-zinc-100 md:text-5xl"
-      style={{ fontFamily: "'UnifrakturCook', 'MedievalSharp', 'Cinzel Decorative', serif" }}
+      style={{ fontFamily: "'Perry Gothic', serif" }}
     >
       {title}
     </h2>
@@ -416,8 +416,8 @@ const OpeningGate = ({ onEnter }: { onEnter: () => void }) => (
         >
           <p className="mb-4 text-xs uppercase tracking-[0.45em] text-red-300/80">An Invitation from the Shadows</p>
           <h1
-            className="text-5xl uppercase text-red-700 md:text-7xl"
-            style={{ fontFamily: "'UnifrakturCook', 'MedievalSharp', 'Cinzel Decorative', serif" }}
+            className="text-5xl text-red-700 md:text-7xl"
+            style={{ fontFamily: "'Perry Gothic', serif" }}
           >
             Maneesha & Ruchini
           </h1>
@@ -778,8 +778,8 @@ export default function GothicWeddingInvitation() {
                       initial={{ opacity: 0, y: 18 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.45 }}
-                      className="text-6xl font-black uppercase leading-none tracking-[0.08em] text-red-700 md:text-8xl"
-                      style={{ fontFamily: "'UnifrakturCook', 'MedievalSharp', 'Cinzel Decorative', serif" }}
+                      className="text-6xl font-black leading-none tracking-[0.08em] text-red-700 md:text-8xl"
+                      style={{ fontFamily: "'Perry Gothic', serif" }}
                     >
                       <BloodInkTitle>{eventDetails.groom}</BloodInkTitle>
                     </motion.h1>
@@ -810,8 +810,8 @@ export default function GothicWeddingInvitation() {
                       initial={{ opacity: 0, y: 18 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.85 }}
-                      className="text-5xl font-black uppercase leading-none tracking-[0.08em] text-red-700 md:text-7xl"
-                      style={{ fontFamily: "'UnifrakturCook', 'MedievalSharp', 'Cinzel Decorative', serif" }}
+                      className="text-5xl font-black leading-none tracking-[0.08em] text-red-700 md:text-7xl"
+                      style={{ fontFamily: "'Perry Gothic', serif" }}
                     >
                       <BloodInkTitle>{eventDetails.bride}</BloodInkTitle>
                     </motion.h2>
@@ -927,7 +927,7 @@ export default function GothicWeddingInvitation() {
                   <Gift className="h-5 w-5" />
                   <span className="text-xs uppercase tracking-[0.35em] text-zinc-400">Dress Code</span>
                 </div>
-                <h3 className="text-3xl font-semibold text-zinc-100" style={{ fontFamily: "'UnifrakturCook', 'MedievalSharp', 'Cinzel Decorative', serif" }}>
+                <h3 className="text-3xl font-semibold text-zinc-100" style={{ fontFamily: "'Perry Gothic', serif" }}>
                   Elegance of the Darkness
                 </h3>
                 <div className="mt-6 space-y-4">
@@ -946,7 +946,7 @@ export default function GothicWeddingInvitation() {
                   <MapPin className="h-5 w-5" />
                   <span className="text-xs uppercase tracking-[0.35em] text-zinc-400">Venue & Timing</span>
                 </div>
-                <h3 className="text-3xl font-semibold text-zinc-100" style={{ fontFamily: "'UnifrakturCook', 'MedievalSharp', 'Cinzel Decorative', serif" }}>
+                <h3 className="text-3xl font-semibold text-zinc-100" style={{ fontFamily: "'Perry Gothic', serif" }}>
                   Where Romance Meets the Mist
                 </h3>
                 <p className="mt-4 leading-7 text-zinc-400">
@@ -1007,7 +1007,7 @@ export default function GothicWeddingInvitation() {
                   <QrCode className="h-5 w-5" />
                   <span className="text-xs uppercase tracking-[0.35em] text-zinc-400">Guest QR Invitation</span>
                 </div>
-                <h3 className="text-3xl font-semibold text-zinc-100" style={{ fontFamily: "'UnifrakturCook', 'MedievalSharp', 'Cinzel Decorative', serif" }}>
+                <h3 className="text-3xl font-semibold text-zinc-100" style={{ fontFamily: "'Perry Gothic', serif" }}>
                   Share the Invitation Instantly
                 </h3>
                 <p className="mt-4 leading-7 text-zinc-400">
@@ -1051,7 +1051,7 @@ export default function GothicWeddingInvitation() {
                 <div className="flex h-14 w-14 items-center justify-center rounded-full border border-red-900/80 bg-red-950/20 text-red-300">
                   <Scroll className="h-6 w-6" />
                 </div>
-                <h2 className="mt-6 text-3xl font-semibold text-zinc-100 md:text-5xl" style={{ fontFamily: "'UnifrakturCook', 'MedievalSharp', 'Cinzel Decorative', serif" }}>
+                <h2 className="mt-6 text-3xl font-semibold text-zinc-100 md:text-5xl" style={{ fontFamily: "'Perry Gothic', serif" }}>
                   Will You Join Our Eternal Celebration?
                 </h2>
                 <p className="mt-5 max-w-xl text-base leading-7 text-zinc-400 md:text-lg">

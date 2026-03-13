@@ -1,6 +1,21 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
+
+@font-face {
+  font-family: "Perry Gothic";
+  src: url("./assets/fonts/PERRYGOT.TTF") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Perry Gothic";
+  src: url("./assets/fonts/PERRYGOT.TTF") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
