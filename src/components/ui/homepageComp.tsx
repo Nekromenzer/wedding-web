@@ -119,86 +119,418 @@ const dressCode = [
   "Velvet, lace, satin, or timeless evening silhouettes",
 ];
 
+/* =========================
+   SPIDER WEB
+   More realistic:
+   - thread sway
+   - dew shimmer
+   - denser radial strands
+   ========================= */
 export function SpiderWeb({ className = "" }: { className?: string }) {
+  const radialLines = Array.from({ length: 8 }, (_, i) => i * 22.5);
+  const rings = [18, 34, 50, 66, 82];
+
   return (
-    <div className={`pointer-events-none absolute ${className}`}>
-      <div className="relative h-28 w-28 opacity-35 md:h-36 md:w-36">
-        <div className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-white/30" />
-        <div className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-white/25" />
-        <div className="absolute inset-4 rounded-full border border-white/20" />
-        <div className="absolute inset-8 rounded-full border border-white/15" />
-        <div className="absolute inset-12 rounded-full border border-white/10" />
-        <div className="absolute left-1/2 top-1/2 h-full w-px -translate-x-1/2 -translate-y-1/2 rotate-45 bg-white/15" />
-        <div className="absolute left-1/2 top-1/2 h-full w-px -translate-x-1/2 -translate-y-1/2 -rotate-45 bg-white/15" />
+    <motion.div
+      className={`pointer-events-none absolute ${className}`}
+      animate={{ rotate: [0, 0.8, -0.6, 0] }}
+      transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      style={{ transformOrigin: "top left" }}
+    >
+      <div className="relative h-36 w-36 opacity-40 md:h-48 md:w-48">
+        {/* anchor threads */}
+        <div className="absolute left-0 top-0 h-px w-full origin-left rotate-[18deg] bg-white/15" />
+        <div className="absolute left-0 top-0 h-px w-[78%] origin-left rotate-[44deg] bg-white/10" />
+        <div className="absolute left-0 top-0 h-px w-[58%] origin-left rotate-[72deg] bg-white/10" />
+
+        {/* radial lines */}
+        {radialLines.map((deg) => (
+          <div
+            key={deg}
+            className="absolute left-0 top-0 h-full w-full"
+            style={{ transform: `rotate(${deg}deg)` }}
+          >
+            <div className="absolute left-0 top-0 h-full w-px origin-top bg-gradient-to-b from-white/30 via-white/18 to-transparent" />
+          </div>
+        ))}
+
+        {/* curved rings */}
+        {rings.map((size, i) => (
+          <motion.div
+            key={size}
+            className="absolute rounded-full border border-white/15"
+            style={{
+              width: `${size}%`,
+              height: `${size}%`,
+              left: 0,
+              top: 0,
+              borderRightColor: "rgba(255,255,255,0.08)",
+              borderBottomColor: "rgba(255,255,255,0.08)",
+              transformOrigin: "top left",
+            }}
+            animate={{
+              opacity: [0.12, 0.18, 0.12],
+            }}
+            transition={{
+              duration: 3.5 + i,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+
+        {/* dew highlights */}
+        {[
+          { x: "24%", y: "18%" },
+          { x: "38%", y: "29%" },
+          { x: "14%", y: "40%" },
+          { x: "48%", y: "54%" },
+          { x: "28%", y: "66%" },
+        ].map((drop, i) => (
+          <motion.div
+            key={i}
+            className="absolute h-1.5 w-1.5 rounded-full bg-white/60 blur-[0.5px]"
+            style={{ left: drop.x, top: drop.y }}
+            animate={{
+              opacity: [0.15, 0.75, 0.2],
+              scale: [0.9, 1.15, 0.9],
+            }}
+            transition={{
+              duration: 2.8 + i * 0.4,
+              delay: i * 0.2,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
       </div>
-    </div>
+    </motion.div>
   );
 }
 
+/* =========================
+   CANDLE GLOW
+   More realistic:
+   - flame body + inner core
+   - flicker with tilt
+   - warm halo + smoke hint
+   ========================= */
 export function CandleGlow({ className = "" }: { className?: string }) {
   return (
     <div className={`pointer-events-none absolute ${className}`}>
+      {/* outer warm glow */}
       <motion.div
-        animate={{ opacity: [0.35, 0.7, 0.45, 0.8, 0.35], scale: [1, 1.06, 0.98, 1.04, 1] }}
-        transition={{ repeat: Infinity, duration: 3.2, ease: "easeInOut" }}
-        className="h-24 w-24 rounded-full bg-red-700/20 blur-2xl"
+        className="absolute left-1/2 top-1/2 h-28 w-28 -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-700/18 blur-3xl"
+        animate={{
+          opacity: [0.25, 0.42, 0.3, 0.48, 0.25],
+          scale: [1, 1.08, 0.98, 1.06, 1],
+        }}
+        transition={{
+          duration: 2.6,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
       />
+
+      {/* core glow */}
       <motion.div
-        animate={{ opacity: [0.55, 0.9, 0.6, 1, 0.55], y: [0, -2, 0, -1, 0] }}
-        transition={{ repeat: Infinity, duration: 1.6, ease: "easeInOut" }}
-        className="absolute left-1/2 top-1/2 h-5 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-t from-orange-500 via-red-500 to-yellow-200"
+        className="absolute left-1/2 top-1/2 h-14 w-14 -translate-x-1/2 -translate-y-[55%] rounded-full bg-orange-400/22 blur-2xl"
+        animate={{
+          opacity: [0.25, 0.55, 0.35, 0.6, 0.25],
+          scale: [0.95, 1.1, 1, 1.08, 0.95],
+        }}
+        transition={{
+          duration: 1.8,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+
+      {/* flame */}
+      <motion.div
+        className="absolute left-1/2 top-1/2 h-8 w-5 -translate-x-1/2 -translate-y-1/2 rounded-[999px_999px_999px_999px/1300px_1300px_700px_700px] bg-gradient-to-t from-red-600 via-orange-400 to-yellow-200 shadow-[0_0_20px_rgba(255,180,80,0.45)]"
+        animate={{
+          scaleY: [1, 1.15, 0.92, 1.1, 1],
+          scaleX: [1, 0.92, 1.06, 0.96, 1],
+          rotate: [-3, 2, -1, 3, -2],
+          x: [0, -1.5, 1, -1, 0],
+          y: [0, -1, 0.5, -0.5, 0],
+        }}
+        transition={{
+          duration: 1.1,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        style={{ transformOrigin: "center bottom" }}
+      >
+        <motion.div
+          className="absolute left-1/2 top-[18%] h-3.5 w-2.5 -translate-x-1/2 rounded-full bg-yellow-100/90 blur-[0.5px]"
+          animate={{
+            opacity: [0.7, 1, 0.75, 1, 0.7],
+            scale: [0.95, 1.08, 0.92, 1.04, 0.95],
+          }}
+          transition={{
+            duration: 0.9,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+      </motion.div>
+
+      {/* subtle smoke */}
+      <motion.div
+        className="absolute left-1/2 top-[36%] h-10 w-6 -translate-x-1/2 rounded-full bg-white/10 blur-xl"
+        animate={{
+          y: [0, -8, -16],
+          x: [0, 2, -2],
+          opacity: [0.08, 0.12, 0],
+          scale: [0.8, 1, 1.25],
+        }}
+        transition={{
+          duration: 2.8,
+          repeat: Infinity,
+          ease: "easeOut",
+        }}
       />
     </div>
   );
 }
 
+/* =========================
+   FLOATING MIST
+   More realistic:
+   - layered fog sheets
+   - stretched shapes
+   - drifting sideways
+   - softer opacity breathing
+   ========================= */
 export function FloatingMist() {
-  const blobs = useMemo(
+  const layers = useMemo(
     () => [
-      { left: "4%", top: "10%", delay: 0, duration: 12, size: "w-44 h-44" },
-      { left: "74%", top: "12%", delay: 1.2, duration: 14, size: "w-56 h-56" },
-      { left: "14%", top: "62%", delay: 0.8, duration: 13, size: "w-52 h-52" },
-      { left: "80%", top: "70%", delay: 1.8, duration: 15, size: "w-40 h-40" },
-      { left: "42%", top: "34%", delay: 1.4, duration: 16, size: "w-60 h-60" },
+      {
+        left: "-8%",
+        top: "8%",
+        width: "42rem",
+        height: "12rem",
+        delay: 0,
+        duration: 28,
+        opacity: 0.12,
+      },
+      {
+        left: "18%",
+        top: "22%",
+        width: "36rem",
+        height: "10rem",
+        delay: 2,
+        duration: 24,
+        opacity: 0.09,
+      },
+      {
+        left: "52%",
+        top: "12%",
+        width: "34rem",
+        height: "11rem",
+        delay: 1.2,
+        duration: 30,
+        opacity: 0.1,
+      },
+      {
+        left: "-4%",
+        top: "58%",
+        width: "38rem",
+        height: "12rem",
+        delay: 3,
+        duration: 26,
+        opacity: 0.11,
+      },
+      {
+        left: "46%",
+        top: "68%",
+        width: "44rem",
+        height: "13rem",
+        delay: 0.8,
+        duration: 32,
+        opacity: 0.12,
+      },
     ],
     []
   );
 
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      {blobs.map((blob, i) => (
+      {layers.map((layer, i) => (
         <motion.div
           key={i}
-          className={`absolute rounded-full ${blob.size} bg-white/5 blur-3xl`}
-          style={{ left: blob.left, top: blob.top }}
-          animate={{ y: [0, -20, 10, 0], x: [0, 12, -8, 0], opacity: [0.12, 0.26, 0.18, 0.12] }}
-          transition={{ repeat: Infinity, duration: blob.duration, delay: blob.delay, ease: "easeInOut" }}
+          className="absolute rounded-full bg-white blur-3xl"
+          style={{
+            left: layer.left,
+            top: layer.top,
+            width: layer.width,
+            height: layer.height,
+            opacity: layer.opacity,
+            filter: "blur(48px)",
+            background:
+              "radial-gradient(ellipse at center, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.08) 35%, rgba(255,255,255,0.02) 70%, transparent 100%)",
+          }}
+          animate={{
+            x: [0, 40, -20, 18, 0],
+            y: [0, -8, 6, -4, 0],
+            scaleX: [1, 1.08, 0.96, 1.04, 1],
+            scaleY: [1, 0.96, 1.04, 0.98, 1],
+            opacity: [
+              layer.opacity * 0.7,
+              layer.opacity,
+              layer.opacity * 0.85,
+              layer.opacity * 1.05,
+              layer.opacity * 0.7,
+            ],
+          }}
+          transition={{
+            duration: layer.duration,
+            delay: layer.delay,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
         />
       ))}
+
+      {/* lower creeping fog */}
+      <motion.div
+        className="absolute bottom-[-6%] left-[-10%] h-[22rem] w-[140%] blur-3xl"
+        style={{
+          background:
+            "linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.03) 30%, rgba(255,255,255,0.09) 65%, rgba(255,255,255,0.14) 100%)",
+        }}
+        animate={{
+          x: [0, 20, -12, 0],
+          opacity: [0.2, 0.28, 0.22, 0.2],
+        }}
+        transition={{
+          duration: 18,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
     </div>
   );
 }
 
+/* =========================
+   FLOATING BATS
+   More realistic:
+   - different sizes/depth
+   - wing flapping
+   - non-linear paths
+   - varied opacity and speed
+   ========================= */
+function Bat({ size = 32 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size * 0.55}
+      viewBox="0 0 120 60"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="drop-shadow-[0_0_10px_rgba(0,0,0,0.4)]"
+    >
+      <path
+        d="M60 28
+           C56 22, 52 18, 48 16
+           C44 22, 36 28, 28 26
+           C22 24, 16 18, 10 14
+           C12 22, 12 30, 6 38
+           C16 36, 24 38, 32 42
+           C40 36, 48 32, 56 30
+           C57 34, 58 38, 60 42
+           C62 38, 63 34, 64 30
+           C72 32, 80 36, 88 42
+           C96 38, 104 36, 114 38
+           C108 30, 108 22, 110 14
+           C104 18, 98 24, 92 26
+           C84 28, 76 22, 72 16
+           C68 18, 64 22, 60 28Z"
+        fill="rgba(18,18,18,0.95)"
+      />
+    </svg>
+  );
+}
+
 export function FloatingBats() {
-  const bats = [
-    { top: "9%", duration: 15, delay: 0, size: "text-3xl" },
-    { top: "22%", duration: 18, delay: 3, size: "text-4xl" },
-    { top: "67%", duration: 16, delay: 6, size: "text-3xl" },
-  ];
+  const bats = useMemo(
+    () => [
+      {
+        top: "10%",
+        size: 24,
+        duration: 18,
+        delay: 0,
+        x: ["-10vw", "18vw", "42vw", "70vw", "110vw"],
+        y: [0, -18, 10, -8, 12],
+        opacity: [0, 0.5, 0.35, 0.45, 0],
+      },
+      {
+        top: "20%",
+        size: 38,
+        duration: 24,
+        delay: 5,
+        x: ["110vw", "78vw", "52vw", "24vw", "-12vw"],
+        y: [0, 16, -12, 10, -6],
+        opacity: [0, 0.35, 0.55, 0.3, 0],
+      },
+      {
+        top: "38%",
+        size: 28,
+        duration: 20,
+        delay: 2,
+        x: ["-8vw", "24vw", "50vw", "76vw", "108vw"],
+        y: [0, -10, 12, -14, 6],
+        opacity: [0, 0.28, 0.42, 0.3, 0],
+      },
+      {
+        top: "62%",
+        size: 20,
+        duration: 16,
+        delay: 8,
+        x: ["108vw", "70vw", "40vw", "18vw", "-10vw"],
+        y: [0, 8, -8, 12, -4],
+        opacity: [0, 0.22, 0.34, 0.22, 0],
+      },
+    ],
+    []
+  );
 
   return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden opacity-50">
+    <div className="pointer-events-none absolute inset-0 overflow-hidden opacity-80">
       {bats.map((bat, i) => (
         <motion.div
           key={i}
           className="absolute"
           style={{ top: bat.top }}
-          initial={{ x: "-15vw", opacity: 0 }}
-          animate={{ x: ["-15vw", "45vw", "110vw"], opacity: [0, 0.4, 0.2, 0] }}
-          transition={{ repeat: Infinity, duration: bat.duration, delay: bat.delay, ease: "linear" }}
+          animate={{
+            x: bat.x,
+            y: bat.y,
+            opacity: bat.opacity,
+          }}
+          transition={{
+            duration: bat.duration,
+            delay: bat.delay,
+            repeat: Infinity,
+            ease: "linear",
+          }}
         >
-          <motion.div animate={{ y: [0, -10, 0, 6, 0] }} transition={{ repeat: Infinity, duration: 2.4, ease: "easeInOut" }} className={`${bat.size} md:text-5xl`}>
-            🦇
+          <motion.div
+            animate={{
+              scaleY: [1, 0.78, 1.08, 0.82, 1],
+              scaleX: [1, 1.08, 0.96, 1.1, 1],
+              rotate: [-4, 2, -3, 3, -2],
+            }}
+            transition={{
+              duration: 0.42,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            style={{ transformOrigin: "center center" }}
+          >
+            <Bat size={bat.size} />
           </motion.div>
         </motion.div>
       ))}
