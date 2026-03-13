@@ -33,6 +33,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import draculeMusic from "@/assets/dracule-music.mp3";
 
 const eventDetails = {
   groom: "Maneesha",
@@ -382,7 +383,7 @@ const BloodInkTitle = ({ children, className = "" }) => (
   </motion.span>
 );
 
-const OpeningGate = ({ onEnter }) => (
+const OpeningGate = ({ onEnter }: { onEnter: () => void }) => (
   <AnimatePresence>
     <motion.div
       initial={{ opacity: 1 }}
@@ -436,6 +437,7 @@ export default function GothicWeddingInvitation() {
   const weddingDate = new Date("2026-05-26T11:00:00");
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [musicOn, setMusicOn] = useState(false);
+  const [audioError, setAudioError] = useState("");
   const [accepted, setAccepted] = useState(true);
   const [guestCount, setGuestCount] = useState("2");
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -451,7 +453,7 @@ export default function GothicWeddingInvitation() {
     phone: "",
     message: "",
   });
-  const audioRef = useRef(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     const updateCountdown = () => {
@@ -481,14 +483,64 @@ export default function GothicWeddingInvitation() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => {
-    if (!audioRef.current) return;
-    if (musicOn) {
-      audioRef.current.play().catch(() => {});
-    } else {
-      audioRef.current.pause();
+  const startMusic = async () => {
+    const audio = audioRef.current;
+    if (!audio) {
+      setAudioError("Audio player is not available.");
+      return false;
     }
-  }, [musicOn]);
+
+    try {
+      audio.volume = 0.45;
+      audio.muted = false;
+      await audio.play();
+      setMusicOn(true);
+      setAudioError("");
+      return true;
+    } catch {
+      setMusicOn(false);
+      setAudioError("Music could not start. Check the audio file or browser media permissions.");
+      return false;
+    }
+  };
+
+  const stopMusic = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.pause();
+    audio.currentTime = 0;
+    setMusicOn(false);
+    setAudioError("");
+  };
+
+  const toggleMusic = async () => {
+    if (musicOn) {
+      stopMusic();
+      return;
+    }
+    await startMusic();
+  };
+
+  const handleEnter = async () => {
+    setShowOpening(false);
+    await startMusic();
+  };
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio || showOpening || musicOn) return;
+
+    audio.volume = 0.45;
+    audio
+      .play()
+      .then(() => {
+        setMusicOn(true);
+        setAudioError("");
+      })
+      .catch(() => {
+        setMusicOn(false);
+      });
+  }, [showOpening, musicOn]);
 
   const handleFieldChange = (field) => (e) => {
     setFormData((prev) => ({ ...prev, [field]: e.target.value }));
@@ -563,13 +615,21 @@ export default function GothicWeddingInvitation() {
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-[linear-gradient(180deg,#120909,#090909)] text-zinc-100 selection:bg-red-900/60">
-      {showOpening ? <OpeningGate onEnter={() => setShowOpening(false)} /> : null}
+      {showOpening ? <OpeningGate onEnter={handleEnter} /> : null}
 
-      <audio ref={audioRef} loop preload="none">
-        <source
-          src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8d536216d.mp3?filename=dark-ambient-piano-110495.mp3"
-          type="audio/mpeg"
-        />
+      <audio
+        ref={audioRef}
+        loop
+        preload="auto"
+        autoPlay
+        playsInline
+        onCanPlay={() => setAudioError("")}
+        onError={() => {
+          setMusicOn(false);
+          setAudioError("Audio file failed to load.");
+        }}
+      >
+        <source src={draculeMusic} type="audio/mpeg" />
       </audio>
 
       <motion.header
@@ -597,7 +657,7 @@ export default function GothicWeddingInvitation() {
 
         <div className="flex items-center justify-end gap-2">
           <Button
-            onClick={() => setMusicOn((prev) => !prev)}
+            onClick={toggleMusic}
             variant="outline"
             className="rounded-full border-red-900/80 bg-black/55 px-4 text-zinc-100 backdrop-blur-md hover:bg-red-950/30"
           >
@@ -614,6 +674,12 @@ export default function GothicWeddingInvitation() {
           </Button>
         </div>
       </motion.header>
+
+      {audioError ? (
+        <div className="fixed left-4 right-4 top-24 z-40 mx-auto max-w-md rounded-2xl border border-red-900/70 bg-black/85 px-4 py-3 text-center text-sm text-red-200 backdrop-blur-xl">
+          {audioError}
+        </div>
+      ) : null}
 
       <AnimatePresence>
         {menuOpen ? (
