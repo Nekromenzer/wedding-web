@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
-import { AnimatePresence, motion, useScroll, useTransform, useSpring, useMotionValue, animate } from "framer-motion";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { AnimatePresence, motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
 import {
   CalendarDays, Clock3, MapPin, Heart, Sparkles, MoonStar, ScrollText,
   Music4, Camera, Gift, ChevronDown, Mail, Phone, Users, ExternalLink,
@@ -7,7 +7,6 @@ import {
   CheckCircle2, Copy,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
