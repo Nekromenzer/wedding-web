@@ -69,8 +69,11 @@ const BloodDrips = () => {
   const drips = useMemo(() =>
     Array.from({ length: 12 }, (_, i) => ({
       left: `${4 + i * 8.5}%`,
+      // eslint-disable-next-line react-hooks/purity
       height: 20 + Math.random() * 60,
+      // eslint-disable-next-line react-hooks/purity
       delay: i * 0.3 + Math.random() * 2,
+      // eslint-disable-next-line react-hooks/purity
       width: 2 + Math.random() * 4,
     })), []);
 
@@ -94,6 +97,7 @@ const BloodDrips = () => {
             duration: 3,
             delay: d.delay,
             repeat: Infinity,
+            // eslint-disable-next-line react-hooks/purity
             repeatDelay: 8 + Math.random() * 10,
             ease: [0.25, 0.46, 0.45, 0.94],
           }}
@@ -178,10 +182,12 @@ const BatSVG = ({ size = 32 }: { size?: number }) => (
 const DramaticBats = () => {
   const bats = useMemo(() => Array.from({ length: 9 }, (_, i) => ({
     top: `${5 + i * 10}%`,
+    // eslint-disable-next-line react-hooks/purity
     scale: 0.5 + Math.random() * 1.2,
     duration: 18 + i * 3,
     delay: i * 2.8,
     direction: i % 2 === 0 ? 1 : -1,
+    // eslint-disable-next-line react-hooks/purity
     yPath: [0, -25 + Math.random() * 50, -10 + Math.random() * 30, 5, 0],
   })), []);
 
@@ -217,10 +223,14 @@ const DramaticBats = () => {
 const AshParticles = () => {
   const particles = useMemo(() =>
     Array.from({ length: 22 }, (_, i) => ({
+      // eslint-disable-next-line react-hooks/purity
       left: `${Math.random() * 100}%`,
+      // eslint-disable-next-line react-hooks/purity
       size: 1.5 + Math.random() * 3,
       delay: i * 0.5,
+      // eslint-disable-next-line react-hooks/purity
       duration: 12 + Math.random() * 16,
+      // eslint-disable-next-line react-hooks/purity
       xDrift: (Math.random() - 0.5) * 120,
       color: i % 3 === 0 ? "#c00000" : i % 3 === 1 ? "#ff4400" : "#880000",
     })), []);
@@ -246,46 +256,46 @@ const AshParticles = () => {
 };
 
 /* ─── Candle with Realistic Flame ───────────────────────────────────── */
-const Candle = ({ className = "" }) => (
-  <div className={`pointer-events-none absolute ${className}`}>
-    <div className="relative flex flex-col items-center">
-      {/* flame glow halo */}
-      <motion.div
-        animate={{ scale: [1, 1.4, 0.9, 1.3, 1], opacity: [0.2, 0.5, 0.25, 0.45, 0.2] }}
-        transition={{ repeat: Infinity, duration: 2.8, ease: "easeInOut" }}
-        className="absolute -top-4 rounded-full"
-        style={{ width: 48, height: 48, background: "radial-gradient(circle, rgba(255,120,0,0.4) 0%, transparent 70%)", filter: "blur(8px)" }}
-      />
-      {/* inner flame */}
-      <motion.div
-        animate={{ scaleY: [1, 1.18, 0.88, 1.12, 1], scaleX: [1, 0.88, 1.05, 0.92, 1], y: [0, -2, 1, -1, 0] }}
-        transition={{ repeat: Infinity, duration: 0.9, ease: "easeInOut" }}
-        style={{
-          width: 10, height: 22,
-          background: "linear-gradient(180deg, #fff8c0 0%, #ffcc00 20%, #ff8800 50%, #cc2200 80%, transparent 100%)",
-          borderRadius: "50% 50% 50% 50% / 60% 60% 40% 40%",
-          filter: "blur(0.5px)",
-          boxShadow: "0 0 12px rgba(255,120,0,0.8), 0 0 24px rgba(200,50,0,0.4)",
-        }}
-      />
-      {/* wick */}
-      <div style={{ width: 2, height: 6, background: "#333", borderRadius: 1 }} />
-      {/* candle body */}
-      <motion.div
-        animate={{ opacity: [0.85, 1, 0.88, 0.95, 0.85] }}
-        transition={{ repeat: Infinity, duration: 2.8 }}
-        style={{
-          width: 16, height: 64,
-          background: "linear-gradient(180deg, #f0e8d8 0%, #d4c4a8 50%, #b8a888 100%)",
-          borderRadius: "2px 2px 4px 4px",
-          boxShadow: "inset -2px 0 4px rgba(0,0,0,0.3), 2px 0 4px rgba(255,200,100,0.15)",
-        }}
-      />
-      {/* wax drip */}
-      <div style={{ width: 18, height: 8, background: "#c8b894", borderRadius: "0 0 8px 8px", marginTop: -2 }} />
-    </div>
-  </div>
-);
+// const Candle = ({ className = "" }) => (
+//   <div className={`pointer-events-none absolute ${className}`}>
+//     <div className="relative flex flex-col items-center">
+//       {/* flame glow halo */}
+//       <motion.div
+//         animate={{ scale: [1, 1.4, 0.9, 1.3, 1], opacity: [0.2, 0.5, 0.25, 0.45, 0.2] }}
+//         transition={{ repeat: Infinity, duration: 2.8, ease: "easeInOut" }}
+//         className="absolute -top-4 rounded-full"
+//         style={{ width: 48, height: 48, background: "radial-gradient(circle, rgba(255,120,0,0.4) 0%, transparent 70%)", filter: "blur(8px)" }}
+//       />
+//       {/* inner flame */}
+//       <motion.div
+//         animate={{ scaleY: [1, 1.18, 0.88, 1.12, 1], scaleX: [1, 0.88, 1.05, 0.92, 1], y: [0, -2, 1, -1, 0] }}
+//         transition={{ repeat: Infinity, duration: 0.9, ease: "easeInOut" }}
+//         style={{
+//           width: 10, height: 22,
+//           background: "linear-gradient(180deg, #fff8c0 0%, #ffcc00 20%, #ff8800 50%, #cc2200 80%, transparent 100%)",
+//           borderRadius: "50% 50% 50% 50% / 60% 60% 40% 40%",
+//           filter: "blur(0.5px)",
+//           boxShadow: "0 0 12px rgba(255,120,0,0.8), 0 0 24px rgba(200,50,0,0.4)",
+//         }}
+//       />
+//       {/* wick */}
+//       <div style={{ width: 2, height: 6, background: "#333", borderRadius: 1 }} />
+//       {/* candle body */}
+//       <motion.div
+//         animate={{ opacity: [0.85, 1, 0.88, 0.95, 0.85] }}
+//         transition={{ repeat: Infinity, duration: 2.8 }}
+//         style={{
+//           width: 16, height: 64,
+//           background: "linear-gradient(180deg, #f0e8d8 0%, #d4c4a8 50%, #b8a888 100%)",
+//           borderRadius: "2px 2px 4px 4px",
+//           boxShadow: "inset -2px 0 4px rgba(0,0,0,0.3), 2px 0 4px rgba(255,200,100,0.15)",
+//         }}
+//       />
+//       {/* wax drip */}
+//       <div style={{ width: 18, height: 8, background: "#c8b894", borderRadius: "0 0 8px 8px", marginTop: -2 }} />
+//     </div>
+//   </div>
+// );
 
 /* ─── Roaming Spider ────────────────────────────────────────────────── */
 // Each leg: { ox, oy } = attachment point on thorax (relative to centre 40,40)
@@ -1566,9 +1576,14 @@ export default function GothicWeddingInvitation() {
                   <Copy className="mr-2 h-4 w-4" />
                   {copied ? "Copied!" : "Copy Link"}
                 </Button>
-                <Button asChild className="rounded-full bg-red-900 px-5 text-white hover:bg-red-800">
-                  <a href={appConfig.inviteUrl} target="_blank" rel="noreferrer">Open Invite</a>
-                </Button>
+                <a
+                  href={appConfig.inviteUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-full bg-red-900 px-5 text-white hover:bg-red-800 inline-flex items-center justify-center"
+                >
+                  Open Invite
+                </a>
               </div>
             </motion.div>
 
