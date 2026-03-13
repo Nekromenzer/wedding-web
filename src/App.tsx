@@ -346,7 +346,7 @@ const RoamingSpider = () => {
   const [pos, setPos] = useState({ x: 60, y: 15 });
   const [phase, setPhase] = useState(0);
   const [angle, setAngle] = useState(0);
-  const animRef = useRef<number>();
+  const animRef = useRef<number>(0);
   const posRef = useRef({ x: 60, y: 15 });
   const targetRef = useRef({ x: 60, y: 15 });
   const phaseRef = useRef(0);
@@ -767,6 +767,7 @@ const SectionHeading = ({ eyebrow, title, text }: { eyebrow: string; title: stri
 );
 
 /* ─── Glowing Detail Card ───────────────────────────────────────────── */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const DetailCard = ({ icon: Icon, label, value }: { icon: any; label: string; value: string }) => (
   <motion.div whileHover={{ y: -4, scale: 1.02 }} transition={{ type: "spring", stiffness: 300 }}>
     <div className="rounded-2xl border border-red-950/80 bg-black/50 p-5 shadow-[0_0_25px_rgba(120,0,0,0.15)] backdrop-blur-sm hover:shadow-[0_0_40px_rgba(180,0,0,0.2)] transition-shadow">
@@ -829,6 +830,7 @@ const StoryCard = ({ title, text, index }: { title: string; text: string; index:
 );
 
 /* ─── Gallery Card ──────────────────────────────────────────────────── */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const GalleryCard = ({ photo, index }: { photo: any; index: number }) => (
   <motion.div
     initial={{ opacity: 0, scale: 0.9, y: 30 }}
@@ -1100,7 +1102,7 @@ export default function GothicWeddingInvitation() {
     setFormData(prev => ({ ...prev, [field]: e.target.value }));
 
   const copyInviteLink = async () => {
-    try { await navigator.clipboard.writeText(appConfig.inviteUrl); setCopied(true); setTimeout(() => setCopied(false), 1800); } catch {}
+    try { await navigator.clipboard.writeText(appConfig.inviteUrl); setCopied(true); setTimeout(() => setCopied(false), 1800); } catch { /* empty */ }
   };
 
   const payload = { ...formData, attending: accepted, guestCount, submittedAt: new Date().toISOString() };
@@ -1360,7 +1362,7 @@ export default function GothicWeddingInvitation() {
                     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.2 }}
                       className="mt-6 flex flex-wrap gap-2"
                     >
-                      {["BLACK & CRIMSON", "DRACULA INSPIRED", "ELEGANCE OF DARKNESS"].map((badge, i) => (
+                      {["BLACK & CRIMSON", "DRACULA INSPIRED", "ELEGANCE OF DARKNESS"].map((badge) => (
                         <motion.span
                           key={badge}
                           whileHover={{ scale: 1.05, borderColor: "rgba(180,0,0,0.6)" }}
