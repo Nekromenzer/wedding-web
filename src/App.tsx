@@ -575,7 +575,7 @@ export default function GothicWeddingInvitation() {
       <motion.header
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className={`fixed left-1/2 top-4 z-50 flex w-[calc(100%-2rem)] max-w-6xl -translate-x-1/2 items-center justify-between rounded-full border px-4 py-3 backdrop-blur-xl transition-all md:top-6 md:w-[calc(100%-3rem)] md:px-6 ${scrolled ? "border-red-900/80 bg-black/75 shadow-[0_0_35px_rgba(90,0,0,0.25)]" : "border-white/10 bg-black/35"}`}
+        className={`fixed inset-x-4 top-4 z-50 mx-auto box-border grid max-w-6xl grid-cols-[1fr_auto] items-center rounded-full border px-4 py-3 backdrop-blur-xl transition-all md:inset-x-6 md:top-6 md:grid-cols-[1fr_auto_1fr] md:px-6 ${scrolled ? "border-red-900/80 bg-black/75 shadow-[0_0_35px_rgba(90,0,0,0.25)]" : "border-white/10 bg-black/35"}`}
       >
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-full border border-red-900/80 bg-red-950/25 text-red-300">
@@ -587,7 +587,7 @@ export default function GothicWeddingInvitation() {
           </div>
         </div>
 
-        <nav className="hidden items-center gap-6 md:flex">
+        <nav className="hidden items-center justify-center gap-6 md:flex">
           {navigation.map((item) => (
             <a key={item.href} href={item.href} className="text-sm text-zinc-300 transition hover:text-red-300">
               {item.label}
@@ -595,7 +595,7 @@ export default function GothicWeddingInvitation() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-end gap-2">
           <Button
             onClick={() => setMusicOn((prev) => !prev)}
             variant="outline"
@@ -1072,5 +1072,3 @@ export default function GothicWeddingInvitation() {
     </div>
   );
 }
-
-
