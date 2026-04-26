@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
 import {
   CalendarDays, Clock3, MapPin, Heart, Sparkles, MoonStar, ScrollText,
-  Music4, Camera, Gift, ChevronDown, Mail, Phone, Users, ExternalLink,
+  Music4, Camera, Gift, ChevronDown, Phone, Users, ExternalLink,
   Castle, Scroll, ImagePlus, Menu, X, Send, Loader2,
   CheckCircle2,
 } from "lucide-react";
@@ -29,7 +29,7 @@ const appConfig = {
   googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=Tea+Tree+Hotel+Bandarawela",
   inviteUrl: "https://maneesha-ruchini-wedding.example.com",
   rsvp: {
-    emailTo: "bagimshan.com",
+    whatsAppTo: "94784296999",
     webhookUrl: "",
     googleScriptUrl: "",
     databaseApiUrl: "",
@@ -1072,14 +1072,14 @@ export default function GothicWeddingInvitation() {
   const [musicOn, setMusicOn] = useState(false);
   const [audioError, setAudioError] = useState("");
   const [accepted, setAccepted] = useState(true);
-  const [guestCount, setGuestCount] = useState("2");
+  const [guestCount, setGuestCount] = useState("0");
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState("");
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [showOpening, setShowOpening] = useState(true);
-  const [formData, setFormData] = useState({ name: "", email: "", phone: "", message: "" });
+  const [formData, setFormData] = useState({ name: "", phone: "", message: "" });
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const guestName = useMemo(
     () => (typeof window === "undefined" ? "" : parseGuestNameFromPath(window.location.pathname)),
@@ -1150,22 +1150,29 @@ export default function GothicWeddingInvitation() {
   const handleFieldChange = (field: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setFormData(prev => ({ ...prev, [field]: e.target.value }));
 
-  const payload = { ...formData, attending: accepted, guestCount, submittedAt: new Date().toISOString() };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); setSubmitting(true); setSubmitStatus("");
     try {
-      if (appConfig.rsvp.webhookUrl) {
-        await fetch(appConfig.rsvp.webhookUrl, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-        setSubmitStatus("Saved");
-      } else {
-        const sub = encodeURIComponent(`RSVP - ${formData.name || "Guest"}`);
-        const bod = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.phone}\nAttending: ${accepted ? "Yes" : "No"}\nGuests: ${guestCount}\nMessage: ${formData.message}`);
-        window.location.href = `mailto:${appConfig.rsvp.emailTo}?subject=${sub}&body=${bod}`;
-        setSubmitStatus("Email opened");
-      }
+      const attendance = accepted ? "Yes" : "No (Not Attending)";
+      const rsvpText = `RSVP - ${formData.name || "Guest"}
+Name: ${formData.name || "-"}
+Phone: ${formData.phone || "-"}
+Attending: ${attendance}
+Guests: ${guestCount}
+Message: ${formData.message || "-"}`;
+
+      const waTarget = appConfig.rsvp.whatsAppTo.replace(/\D/g, "");
+      if (!waTarget) throw new Error("Missing WhatsApp number");
+      window.location.href = `https://wa.me/${waTarget}?text=${encodeURIComponent(rsvpText)}`;
+      setSubmitStatus("WhatsApp opened");
       setFormSubmitted(true);
-    } catch { setSubmitStatus("Submission failed"); }
+    } catch (error) {
+      if (error instanceof Error && error.message === "Missing WhatsApp number") {
+        setSubmitStatus("Set a WhatsApp number in appConfig.rsvp.whatsAppTo");
+      } else {
+        setSubmitStatus("Submission failed");
+      }
+    }
     finally { setSubmitting(false); }
   };
 
@@ -1623,9 +1630,8 @@ export default function GothicWeddingInvitation() {
               </p>
               <div className="mt-8 space-y-3">
                 {[
-                  { icon: Mail, text: appConfig.rsvp.emailTo },
-                  { icon: Phone, text: "0766952267 - Maneesha", href: "tel:+94766952267" },
-                  { icon: Phone, text: "0762952267 - Ruchini", href: "tel:+94762952267" },
+                  { icon: Phone, text: "+94766952267 - Maneesha", href: "tel:+94766952267" },
+                  { icon: Phone, text: "0762952267 - Ruchini", href: "tel:0762952267" },
                   { icon: Users, text: "Respond before 20th May 2026" },
                 ].map(({ icon: Icon, text, href }) => (
                   <motion.div key={text} whileHover={{ x: 4 }}
@@ -1666,33 +1672,27 @@ export default function GothicWeddingInvitation() {
                       className="rounded-xl border-red-950/60 bg-black/40 text-zinc-100 placeholder:text-zinc-700 focus:border-red-800 focus:ring-red-900/30"
                     />
                   </div>
-                  <div className="grid gap-5 md:grid-cols-2">
-                    <div>
-                      <Label htmlFor="email" className="mb-2 block text-sm text-zinc-400 tracking-wider">Email</Label>
-                      <Input id="email" type="email" value={formData.email} onChange={handleFieldChange("email")} placeholder="you@example.com"
-                        className="rounded-xl border-red-950/60 bg-black/40 text-zinc-100 placeholder:text-zinc-700 focus:border-red-800"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="phone" className="mb-2 block text-sm text-zinc-400 tracking-wider">Phone</Label>
-                      <Input id="phone" value={formData.phone} onChange={handleFieldChange("phone")} placeholder="Your number"
-                        className="rounded-xl border-red-950/60 bg-black/40 text-zinc-100 placeholder:text-zinc-700 focus:border-red-800"
-                      />
-                    </div>
+                  <div>
+                    <Label htmlFor="phone" className="mb-2 block text-sm text-zinc-400 tracking-wider">Phone</Label>
+                    <Input id="phone" value={formData.phone} onChange={handleFieldChange("phone")} placeholder="Your number"
+                      className="rounded-xl border-red-950/60 bg-black/40 text-zinc-100 placeholder:text-zinc-700 focus:border-red-800"
+                    />
                   </div>
                   <div className="grid gap-5 md:grid-cols-2">
                     <div>
                       <Label htmlFor="guests" className="mb-2 block text-sm text-zinc-400 tracking-wider">Number of Guests</Label>
-                      <Input id="guests" value={guestCount} onChange={(e) => setGuestCount(e.target.value)}
+                      <Input id="guests" type="number" min="0" required value={guestCount} onChange={(e) => setGuestCount(e.target.value)}
                         className="rounded-xl border-red-950/60 bg-black/40 text-zinc-100 focus:border-red-800"
                       />
                     </div>
                     <div className="flex items-end justify-between rounded-xl border border-red-950/50 bg-black/25 p-4">
                       <div>
-                        <p className="text-sm text-zinc-300">Attending</p>
-                        <p className="text-xs text-zinc-600">Toggle if you cannot attend</p>
+                        <p className="text-sm text-zinc-300">Attendance</p>
+                        <p className={`text-xs ${accepted ? "text-emerald-300" : "text-red-300"}`}>
+                          {accepted ? "Attending" : "Not Attending"}
+                        </p>
                       </div>
-                      <Switch checked={accepted} onCheckedChange={setAccepted} />
+                      <Switch checked={accepted} onCheckedChange={(checked) => setAccepted(checked === true)} />
                     </div>
                   </div>
                   <div>
@@ -1710,7 +1710,7 @@ export default function GothicWeddingInvitation() {
                     style={{ background: "linear-gradient(135deg, #8b0000, #5a0000)" }}
                   >
                     {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
-                    Send RSVP
+                    Send RSVP via WhatsApp
                   </motion.button>
                   {submitStatus && !formSubmitted && (
                     <div className="rounded-xl border border-red-900/40 bg-red-950/20 px-5 py-3 text-sm text-red-300">{submitStatus}</div>
