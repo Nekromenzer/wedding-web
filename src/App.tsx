@@ -59,7 +59,6 @@ const navigation = [
   { label: "Story", href: "#story" },
   { label: "Details", href: "#details" },
   { label: "Gallery", href: "#gallery" },
-  { label: "QR", href: "#qr" },
   { label: "RSVP", href: "#rsvp" },
 ];
 
