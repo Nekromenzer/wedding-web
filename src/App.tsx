@@ -29,7 +29,7 @@ const appConfig = {
   googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=Tea+Tree+Hotel+Bandarawela",
   inviteUrl: "https://maneesha-ruchini-wedding.example.com",
   rsvp: {
-    emailTo: "rsvp@maneesha-ruchini.com",
+    emailTo: "bagimshan.com",
     webhookUrl: "",
     googleScriptUrl: "",
     databaseApiUrl: "",
@@ -1555,63 +1555,7 @@ export default function GothicWeddingInvitation() {
           </div>
         </ParallaxSection>
 
-        {/* ── QR ── */}
-        <ParallaxSection id="qr" className="px-6 py-24 md:px-10 lg:px-16">
-          <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="rounded-[2rem] border border-red-950/70 bg-gradient-to-b from-[#140606]/80 to-black/80 p-8 md:p-10 backdrop-blur-sm"
-            >
-              <div className="mb-5 flex items-center gap-3 text-red-400">
-                <QrCode className="h-5 w-5" />
-                <span className="text-[10px] uppercase tracking-[0.4em] text-zinc-500">Guest QR Invitation</span>
-              </div>
-              <h3 className="text-2xl font-semibold text-zinc-100" style={{ fontFamily: "'Cinzel', serif" }}>Share the Invitation Instantly</h3>
-              <p className="mt-4 leading-7 text-zinc-400 text-sm">
-                Guests can scan this code to open your wedding invitation. Print it on invite cards, welcome boards, or table stands.
-              </p>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <Button onClick={copyInviteLink} variant="outline" className="rounded-full border-red-900/70 bg-black/30 px-5 text-zinc-200 hover:bg-red-950/20">
-                  <Copy className="mr-2 h-4 w-4" />
-                  {copied ? "Copied!" : "Copy Link"}
-                </Button>
-                <a
-                  href={appConfig.inviteUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-full bg-red-900 px-5 text-white hover:bg-red-800 inline-flex items-center justify-center"
-                >
-                  Open Invite
-                </a>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.15 }}
-              className="rounded-[2rem] border border-red-950/70 bg-gradient-to-b from-[#140606]/80 to-black/90 p-8 md:p-10 backdrop-blur-sm flex flex-col items-center"
-            >
-              <motion.div
-                whileHover={{ scale: 1.03, boxShadow: "0 0 50px rgba(180,0,0,0.25)" }}
-                className="rounded-[2rem] border border-red-900/40 bg-white p-5 transition-all"
-              >
-                <img
-                  src={`https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=${encodeURIComponent(appConfig.inviteUrl)}`}
-                  alt="Wedding invitation QR code"
-                  className="h-[200px] w-[200px] rounded-xl object-cover md:h-[240px] md:w-[240px]"
-                />
-              </motion.div>
-              <p className="mt-5 max-w-sm text-center text-sm text-zinc-500">
-                Update appConfig.inviteUrl to your real domain before sharing with guests.
-              </p>
-            </motion.div>
-          </div>
-        </ParallaxSection>
-
+     
         {/* ── RSVP ── */}
         <ParallaxSection id="rsvp" className="px-6 pb-28 pt-24 md:px-10 lg:px-16">
           <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.85fr_1.15fr]">
@@ -1635,7 +1579,7 @@ export default function GothicWeddingInvitation() {
               <div className="mt-8 space-y-3">
                 {[
                   { icon: Mail, text: appConfig.rsvp.emailTo },
-                  { icon: Phone, text: "+94 77 123 4567" },
+                  { icon: Phone, text: "+94766952267" },
                   { icon: Users, text: "Respond before 1st May 2026" },
                 ].map(({ icon: Icon, text }) => (
                   <motion.div key={text} whileHover={{ x: 4 }}
