@@ -4,7 +4,7 @@ import {
   CalendarDays, Clock3, MapPin, Heart, Sparkles, MoonStar, ScrollText,
   Music4, Camera, Gift, ChevronDown, Phone, Users, ExternalLink,
   Castle, Scroll, ImagePlus, Menu, X, Send, Loader2,
-  CheckCircle2,
+  CheckCircle2, Download,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import draculeMusic from "@/assets/audio/dracule-music.mp3";
+import weddingInvitation from "@/assets/images/wedding-invitation.png";
 
 /* ─── Event Config ──────────────────────────────────────────────────── */
 const eventDetails = {
@@ -25,9 +26,12 @@ const eventDetails = {
   quote: "Through the shadows of time and the silence of centuries, love always finds its way home.",
 };
 
+const weddingDate = new Date("2026-05-26T11:00:00");
+
 const appConfig = {
   googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=Tea+Tree+Hotel+Bandarawela",
   inviteUrl: "https://maneesha-ruchini-wedding.example.com",
+  invitationFileName: "maneesha-ruchini-wedding-invitation.png",
   rsvp: {
     whatsAppTo: "94784296999",
     webhookUrl: "",
@@ -58,6 +62,7 @@ const navigation = [
   { label: "Home", href: "#home" },
   { label: "Story", href: "#story" },
   { label: "Details", href: "#details" },
+  { label: "Invitation", href: "#invitation" },
   { label: "Gallery", href: "#gallery" },
   { label: "RSVP", href: "#rsvp" },
 ];
@@ -1141,7 +1146,6 @@ const OpeningGate = ({ onEnter }: { onEnter: () => void }) => {
 
 /* ─── Main Component ────────────────────────────────────────────────── */
 export default function GothicWeddingInvitation() {
-  const weddingDate = new Date("2026-05-26T11:00:00");
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [musicOn, setMusicOn] = useState(false);
   const [audioError, setAudioError] = useState("");
@@ -1177,7 +1181,7 @@ export default function GothicWeddingInvitation() {
     const onMouse = (e: MouseEvent) => { mouseX.set(e.clientX); mouseY.set(e.clientY); };
     window.addEventListener("mousemove", onMouse);
     return () => window.removeEventListener("mousemove", onMouse);
-  }, []);
+  }, [mouseX, mouseY]);
 
   useEffect(() => {
     const tick = () => {
@@ -1310,6 +1314,12 @@ Message: ${formData.message || "-"}`;
         </nav>
 
         <div className="flex items-center justify-end gap-2">
+          <a href={weddingInvitation} download={appConfig.invitationFileName} aria-label="Download wedding invitation"
+            className="hidden h-8 items-center justify-center rounded-full border border-red-900/70 bg-black/50 px-4 text-sm font-medium text-zinc-200 transition-all hover:border-red-700 hover:bg-red-950/30 sm:inline-flex"
+          >
+            <Download className="mr-2 h-4 w-4" />
+            <span className="hidden text-xs tracking-widest lg:inline">DOWNLOAD</span>
+          </a>
           <Button onClick={musicOn ? stopMusic : startMusic} variant="outline"
             className="rounded-full border-red-900/70 bg-black/50 px-4 text-zinc-200 hover:bg-red-950/30 hover:border-red-700"
           >
@@ -1345,6 +1355,13 @@ Message: ${formData.message || "-"}`;
                 {item.label}
               </a>
             ))}
+            <a href={weddingInvitation} download={appConfig.invitationFileName} onClick={() => setMenuOpen(false)}
+              className="mt-3 flex items-center justify-center gap-2 rounded-xl border border-red-900/60 bg-red-950/25 px-4 py-3 text-red-100 transition hover:bg-red-950/40"
+              style={{ fontFamily: "'Cinzel', serif", fontSize: 13, letterSpacing: "0.1em" }}
+            >
+              <Download className="h-4 w-4" />
+              Download Invitation
+            </a>
           </motion.div>
         )}
       </AnimatePresence>
@@ -1516,6 +1533,12 @@ Message: ${formData.message || "-"}`;
                       >
                         Our Story
                       </motion.a>
+                      <motion.a href={weddingInvitation} download={appConfig.invitationFileName} whileHover={{ scale: 1.04, borderColor: "rgba(180,0,0,0.6)" }} whileTap={{ scale: 0.97 }}
+                        className="inline-flex items-center gap-2 rounded-full border border-red-900/60 bg-black/30 px-8 py-3 text-sm uppercase tracking-[0.3em] text-zinc-300 transition-all hover:bg-red-950/20"
+                      >
+                        <Download className="h-4 w-4" />
+                        Download Invitation
+                      </motion.a>
                     </motion.div>
                   </div>
 
@@ -1663,6 +1686,69 @@ Message: ${formData.message || "-"}`;
                 </motion.a>
               </motion.div>
             </motion.div>
+          </div>
+        </ParallaxSection>
+
+        {/* ── INVITATION DOWNLOAD ── */}
+        <ParallaxSection id="invitation" className="px-6 py-24 md:px-10 lg:px-16">
+          <div className="mx-auto max-w-6xl">
+            <SectionHeading eyebrow="Official Invitation" title="Download the Wedding Invitation"
+              text="Keep the full invitation image on your phone, share it with family, or save it for the day."
+            />
+            <div className="grid items-center gap-8 lg:grid-cols-[0.75fr_1.25fr]">
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7 }}
+                className="rounded-[2rem] border border-red-950/70 bg-gradient-to-b from-[#140606]/80 to-black/80 p-8 md:p-10 backdrop-blur-sm"
+              >
+                <div className="mb-5 flex items-center gap-3 text-red-400">
+                  <Download className="h-5 w-5" />
+                  <span className="text-[10px] uppercase tracking-[0.4em] text-zinc-500">Save a Copy</span>
+                </div>
+                <h3 className="text-3xl font-semibold text-zinc-100" style={{ fontFamily: "'Cinzel Decorative', serif", fontSize: 24 }}>
+                  Maneesha & Ruchini
+                </h3>
+                <p className="mt-4 leading-7 text-zinc-400 text-sm" style={{ fontFamily: "'IM Fell English', serif" }}>
+                  The invitation is available as a downloadable image for every guest.
+                </p>
+                <motion.a
+                  href={weddingInvitation}
+                  download={appConfig.invitationFileName}
+                  whileHover={{ scale: 1.04, boxShadow: "0 0 30px rgba(180,0,0,0.4)" }}
+                  whileTap={{ scale: 0.98 }}
+                  className="mt-8 inline-flex items-center justify-center gap-2 rounded-full px-8 py-3 text-sm uppercase tracking-[0.3em] text-white transition-all"
+                  style={{ background: "linear-gradient(135deg, #8b0000, #5a0000)" }}
+                >
+                  <Download className="h-4 w-4" />
+                  Download Invitation
+                </motion.a>
+              </motion.div>
+
+              <motion.a
+                href={weddingInvitation}
+                download={appConfig.invitationFileName}
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7 }}
+                className="group block rounded-[2rem] border border-red-950/70 bg-black/60 p-3 shadow-[0_0_50px_rgba(100,0,0,0.22)] backdrop-blur-sm"
+                aria-label="Download wedding invitation"
+              >
+                <div className="relative overflow-hidden rounded-[1.5rem] bg-[#0a0202]">
+                  <img
+                    src={weddingInvitation}
+                    alt="Maneesha and Ruchini wedding invitation"
+                    className="h-auto w-full transition duration-700 group-hover:scale-[1.02]"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 bg-gradient-to-t from-black/90 via-black/45 to-transparent px-5 pb-5 pt-20 text-sm uppercase tracking-[0.3em] text-red-100 opacity-0 transition-opacity group-hover:opacity-100">
+                    <Download className="h-4 w-4" />
+                    Download
+                  </div>
+                </div>
+              </motion.a>
+            </div>
           </div>
         </ParallaxSection>
 
