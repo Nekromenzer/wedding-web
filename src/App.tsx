@@ -1357,7 +1357,7 @@ Message: ${formData.message || "-"}`;
             ))}
             <a href={weddingInvitation} download={appConfig.invitationFileName} onClick={() => setMenuOpen(false)}
               className="mt-3 flex items-center justify-center gap-2 rounded-xl border border-red-900/60 bg-red-950/25 px-4 py-3 text-red-100 transition hover:bg-red-950/40"
-              style={{ fontFamily: "'Cinzel', serif", fontSize: 13, letterSpacing: "0.1em" }}
+              style={{ fontFamily: "'Cinzel', serif", fontSize: 10, letterSpacing: "0.1em" }}
             >
               <Download className="h-4 w-4" />
               Download Invitation
@@ -1718,7 +1718,7 @@ Message: ${formData.message || "-"}`;
                   download={appConfig.invitationFileName}
                   whileHover={{ scale: 1.04, boxShadow: "0 0 30px rgba(180,0,0,0.4)" }}
                   whileTap={{ scale: 0.98 }}
-                  className="mt-8 inline-flex items-center justify-center gap-2 rounded-full px-8 py-3 text-sm uppercase tracking-[0.3em] text-white transition-all"
+                  className="mt-8 inline-flex items-center justify-center gap-2 rounded-full px-8 py-3 text-xs uppercase tracking-[0.3em] text-white transition-all"
                   style={{ background: "linear-gradient(135deg, #8b0000, #5a0000)" }}
                 >
                   <Download className="h-4 w-4" />
