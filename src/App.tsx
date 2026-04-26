@@ -288,6 +288,80 @@ const AshParticles = () => {
   );
 };
 
+/* ─── Cursed Vignette ──────────────────────────────────────────────── */
+const CursedVignette = () => (
+  <motion.div
+    className="pointer-events-none fixed inset-0 z-[4]"
+    animate={{ opacity: [0.2, 0.32, 0.24, 0.36, 0.2] }}
+    transition={{ repeat: Infinity, duration: 11, ease: "easeInOut" }}
+    style={{
+      background:
+        "radial-gradient(circle at center, transparent 28%, rgba(0,0,0,0.55) 62%, rgba(0,0,0,0.9) 100%), radial-gradient(circle at 50% 0%, rgba(120,0,0,0.2), transparent 45%)",
+      mixBlendMode: "multiply",
+    }}
+  />
+);
+
+/* ─── Blood Moon Aura ──────────────────────────────────────────────── */
+const BloodMoonAura = () => (
+  <div className="pointer-events-none absolute right-[-6rem] top-10 z-[2] h-64 w-64 md:right-10 md:h-80 md:w-80">
+    <motion.div
+      className="h-full w-full rounded-full"
+      animate={{
+        scale: [1, 1.08, 0.96, 1.05, 1],
+        opacity: [0.22, 0.4, 0.28, 0.42, 0.22],
+        y: [0, -8, 4, -4, 0],
+      }}
+      transition={{ repeat: Infinity, duration: 9.5, ease: "easeInOut" }}
+      style={{
+        background:
+          "radial-gradient(circle at 35% 35%, rgba(255,120,120,0.45) 0%, rgba(180,0,0,0.34) 30%, rgba(90,0,0,0.2) 56%, rgba(0,0,0,0) 76%)",
+        filter: "blur(2px)",
+      }}
+    />
+  </div>
+);
+
+/* ─── Phantom Eyes ─────────────────────────────────────────────────── */
+const PhantomEyes = () => {
+  const eyes = useMemo(
+    () =>
+      Array.from({ length: 7 }, (_, i) => ({
+        left: `${12 + i * 12}%`,
+        top: `${58 + (i % 3) * 8}%`,
+        delay: i * 1.6,
+        distance: 7 + (i % 3) * 3,
+      })),
+    [],
+  );
+
+  return (
+    <div className="pointer-events-none absolute inset-0 z-[4] overflow-hidden">
+      {eyes.map((eye, i) => (
+        <motion.div
+          key={i}
+          className="absolute"
+          style={{ left: eye.left, top: eye.top }}
+          animate={{ opacity: [0, 0.85, 0.2, 0.9, 0], y: [0, -2, 1, -1, 0] }}
+          transition={{ repeat: Infinity, duration: 7.5, delay: eye.delay, ease: "easeInOut" }}
+        >
+          <div className="flex items-center" style={{ gap: eye.distance }}>
+            {[0, 1].map((pupil) => (
+              <motion.span
+                key={pupil}
+                className="h-1.5 w-1.5 rounded-full bg-red-500"
+                animate={{ scaleY: [1, 0.1, 1, 0.2, 1], opacity: [0.35, 1, 0.45, 1, 0.35] }}
+                transition={{ repeat: Infinity, duration: 2.1, delay: eye.delay + pupil * 0.15, ease: "easeInOut" }}
+                style={{ boxShadow: "0 0 10px rgba(255,40,40,0.75)" }}
+              />
+            ))}
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  );
+};
+
 /* ─── Candle with Realistic Flame ───────────────────────────────────── */
 // const Candle = ({ className = "" }) => (
 //   <div className={`pointer-events-none absolute ${className}`}>
@@ -1278,9 +1352,12 @@ Message: ${formData.message || "-"}`;
       {/* ───────────────────────── HERO ───────────────────────────────── */}
       <div className="relative" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(100,0,0,0.25) 0%, transparent 55%), #060202" }}>
         <BloodDrips />
+        <CursedVignette />
+        <BloodMoonAura />
         <DeepFog />
         <DramaticBats />
         <AshParticles />
+        <PhantomEyes />
         <CastleSilhouette />
         <FlyingRavens />
         <GrimoirePages />
