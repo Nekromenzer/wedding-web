@@ -3,8 +3,8 @@ import { AnimatePresence, motion, useScroll, useTransform, useSpring, useMotionV
 import {
   CalendarDays, Clock3, MapPin, Heart, Sparkles, MoonStar, ScrollText,
   Music4, Camera, Gift, ChevronDown, Mail, Phone, Users, ExternalLink,
-  Castle, Scroll, ImagePlus, Menu, X, QrCode, Send, Loader2,
-  CheckCircle2, Copy,
+  Castle, Scroll, ImagePlus, Menu, X, Send, Loader2,
+  CheckCircle2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -61,6 +61,41 @@ const navigation = [
   { label: "Gallery", href: "#gallery" },
   { label: "RSVP", href: "#rsvp" },
 ];
+
+type InvitationAudience = "you" | "family" | "both";
+
+const audienceLabel: Record<InvitationAudience, string> = {
+  you: "you",
+  family: "you and your family",
+  both: "both of you",
+};
+
+const formatGuestName = (rawName: string) =>
+  rawName
+    .split(" ")
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+    .join(" ");
+
+const parseGuestNameFromPath = (pathname: string) => {
+  const [firstSegment] = pathname.split("/").filter(Boolean);
+  if (!firstSegment) return "";
+  const decoded = decodeURIComponent(firstSegment).replace(/[-_+]+/g, " ").trim();
+  if (!decoded) return "";
+  return formatGuestName(decoded);
+};
+
+const parseAudienceFromUrl = (pathname: string, search: string): InvitationAudience => {
+  const segments = pathname.split("/").filter(Boolean);
+  const params = new URLSearchParams(search);
+  const rawAudience = (params.get("invite") || params.get("to") || params.get("audience") || segments[1] || "")
+    .toLowerCase()
+    .replace(/[\s_-]+/g, "");
+
+  if (["family", "yourfamily", "withfamily"].includes(rawAudience)) return "family";
+  if (["both", "youtwo", "two", "couple", "partner", "alltwo"].includes(rawAudience)) return "both";
+  return "you";
+};
 
 /* ─── Blood Drip Effect ─────────────────────────────────────────────── */
 const BloodDrips = () => {
@@ -1044,9 +1079,19 @@ export default function GothicWeddingInvitation() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [showOpening, setShowOpening] = useState(true);
-  const [copied, setCopied] = useState(false);
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", message: "" });
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const guestName = useMemo(
+    () => (typeof window === "undefined" ? "" : parseGuestNameFromPath(window.location.pathname)),
+    [],
+  );
+  const invitationAudience = useMemo(
+    () => (typeof window === "undefined" ? "you" : parseAudienceFromUrl(window.location.pathname, window.location.search)),
+    [],
+  );
+  const invitationLine = guestName
+    ? `This invitation is for ${guestName} (${audienceLabel[invitationAudience]}).`
+    : "";
 
   // Mouse parallax for hero
   const mouseX = useMotionValue(0);
@@ -1083,6 +1128,11 @@ export default function GothicWeddingInvitation() {
     return () => window.removeEventListener("scroll", fn);
   }, []);
 
+  useEffect(() => {
+    if (!guestName) return;
+    setFormData((prev) => (prev.name ? prev : { ...prev, name: guestName }));
+  }, [guestName]);
+
   const startMusic = async () => {
     const audio = audioRef.current;
     if (!audio) return false;
@@ -1099,10 +1149,6 @@ export default function GothicWeddingInvitation() {
   const handleEnter = async () => { setShowOpening(false); await startMusic(); };
   const handleFieldChange = (field: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setFormData(prev => ({ ...prev, [field]: e.target.value }));
-
-  const copyInviteLink = async () => {
-    try { await navigator.clipboard.writeText(appConfig.inviteUrl); setCopied(true); setTimeout(() => setCopied(false), 1800); } catch { /* empty */ }
-  };
 
   const payload = { ...formData, attending: accepted, guestCount, submittedAt: new Date().toISOString() };
 
@@ -1578,14 +1624,21 @@ export default function GothicWeddingInvitation() {
               <div className="mt-8 space-y-3">
                 {[
                   { icon: Mail, text: appConfig.rsvp.emailTo },
-                  { icon: Phone, text: "+94766952267" },
-                  { icon: Users, text: "Respond before 1st May 2026" },
-                ].map(({ icon: Icon, text }) => (
+                  { icon: Phone, text: "0766952267 - Maneesha", href: "tel:+94766952267" },
+                  { icon: Phone, text: "0762952267 - Ruchini", href: "tel:+94762952267" },
+                  { icon: Users, text: "Respond before 20th May 2026" },
+                ].map(({ icon: Icon, text, href }) => (
                   <motion.div key={text} whileHover={{ x: 4 }}
                     className="flex items-center gap-3 rounded-2xl border border-red-950/50 bg-red-950/10 p-4 text-sm text-zinc-300 transition-all"
                   >
                     <Icon className="h-4 w-4 text-red-400" />
-                    <span>{text}</span>
+                    {href ? (
+                      <a href={href} className="hover:text-red-300 transition-colors">
+                        {text}
+                      </a>
+                    ) : (
+                      <span>{text}</span>
+                    )}
                   </motion.div>
                 ))}
               </div>
@@ -1678,6 +1731,14 @@ export default function GothicWeddingInvitation() {
           >
             "Until death do us part — and perhaps even beyond."
           </motion.p>
+          {invitationLine && (
+            <p
+              className="mt-4 text-sm text-zinc-400"
+              style={{ fontFamily: "'Cinzel', serif", letterSpacing: "0.06em" }}
+            >
+              {invitationLine}
+            </p>
+          )}
           <p className="mt-3 text-xs uppercase tracking-[0.4em] text-zinc-800">{eventDetails.groom} & {eventDetails.bride} · {eventDetails.date}</p>
         </footer>
       </div>
