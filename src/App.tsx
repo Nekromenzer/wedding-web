@@ -3,7 +3,7 @@ import { AnimatePresence, motion, useScroll, useTransform, useSpring, useMotionV
 import {
   CalendarDays, Clock3, MapPin, Heart, Sparkles, MoonStar, ScrollText,
   Music4, Camera, Gift, ChevronDown, Phone, Users, ExternalLink,
-  Castle, Scroll, ImagePlus, Menu, X, Send, Loader2,
+  Castle, Scroll, Menu, X, Send, Loader2,
   CheckCircle2, Download,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import draculeMusic from "@/assets/audio/dracule-music.mp3";
 import weddingInvitation from "@/assets/images/wedding-invitation.png";
+import couplePhotoOne from "@/assets/photos/couple-1.jpg";
+import couplePhotoTwo from "@/assets/photos/couple-2.png";
+import couplePhotoThree from "@/assets/photos/couple-3.png";
+import couplePhotoFour from "@/assets/photos/couple-4.png";
 
 /* ─── Event Config ──────────────────────────────────────────────────── */
 const eventDetails = {
@@ -39,10 +43,10 @@ const appConfig = {
     databaseApiUrl: "",
   },
   couplePhotos: [
-    { src: "/photos/couple-1.jpg", alt: "Maneesha and Ruchini portrait", title: "Moonlit Portrait" },
-    { src: "/photos/couple-2.jpg", alt: "Maneesha and Ruchini together", title: "Crimson Promise" },
-    { src: "/photos/couple-3.jpg", alt: "Wedding pre-shoot photo", title: "Velvet Vows" },
-    { src: "/photos/couple-4.jpg", alt: "Romantic couple session", title: "Eternal Embrace" },
+    { src: couplePhotoOne, alt: "Maneesha holding Ruchini in a quiet outdoor portrait", title: "Held in Quiet Forever" },
+    { src: couplePhotoTwo, alt: "Maneesha and Ruchini sharing a kiss in the hills", title: "Crimson Promise" },
+    { src: couplePhotoThree, alt: "Maneesha and Ruchini holding hands among the trees", title: "Hand in Hand" },
+    { src: couplePhotoFour, alt: "Maneesha and Ruchini standing together by the water", title: "By the Still Water" },
   ],
 };
 
@@ -1756,12 +1760,8 @@ Message: ${formData.message || "-"}`;
         <ParallaxSection id="gallery" className="px-6 py-24 md:px-10 lg:px-16">
           <div className="mx-auto max-w-7xl">
             <SectionHeading eyebrow="Couple Gallery" title="Scenes from a Dark Fairytale"
-              text="Replace the placeholder paths with your real couple photos to make this fully personal."
+              text="Four captured moments from Maneesha and Ruchini's love story."
             />
-            <div className="mb-8 flex items-center justify-center gap-2 text-zinc-600">
-              <ImagePlus className="h-4 w-4 text-red-700" />
-              <p className="text-sm">Add images to /public/photos/ and update appConfig.couplePhotos</p>
-            </div>
             <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
               {appConfig.couplePhotos.map((photo, index) => (
                 <GalleryCard key={photo.src} photo={photo} index={index} />
